@@ -1,0 +1,70 @@
+<h2>Create new Company</h2>
+{{companyForm.directors}}
+<form [formGroup]="companyForm" novalidate (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label class="center-block">Name:
+      <input class="form-control" formControlName="name" >
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">Address:
+      <input class="form-control" formControlName="address">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">City:
+      <input class="form-control" formControlName="city">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">Country:
+      <input class="form-control" formControlName="country">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">Email:
+      <input class="form-control" formControlName="email">
+    </label>
+  </div>
+  <div class="form-group">
+    <label class="center-block">Contact:
+      <input class="form-control" formControlName="contact">
+    </label>
+  </div>
+  <div class="row">
+  	<div class="col-md-6">
+  		<h4>Directors</h4>
+  	</div>
+  	<div class="col-md-6">
+  		<button type="button" class="btn btn-danger pull-right" (click)="addDirector()"> + Add</button>
+  	</div>
+  	<div class="clearfix"></div>
+  </div>
+  
+  <div class="form-group" formArrayName="directors">
+  	<div *ngFor="let director of companyForm.controls.directors.controls;let i=index;">
+  		<div class="panel panel-primary">
+  			<div class="panel-heading">
+  				
+  				<div class="row">
+  					<div class="col-md-6">
+  						Director : {{i + 1}} 
+  					</div>
+  					<div class="col-md-6 text-right">
+  						<button type="button" class="btn btn-default btn-xs" (click)="removeDirector(i)">Delete</button>
+  					</div>
+  				</div>
+  			</div>
+  			<div class="panel-body" [formGroupName]="i">
+  				<div class="form-group">
+  					<input type="text" formControlName='name' placeholder="Enter Director Name" class="form-control" required>
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+  </div>
+  
+  <br>
+  <div class="well" *ngFor="let dir of directors">{{dir}}</div>
+  <button type="submit" [disabled]="!companyForm.valid" class="btn btn-primary">Submit</button>
+</form> 

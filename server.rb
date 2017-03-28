@@ -54,11 +54,13 @@ namespace '/api/v1' do
 
 	before do
 		content_type 'application/json'
+		headers 'Access-Control-Allow-Origin' => '*',
+            	'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST', 'PUT', 'DELETE']  
 	end
 
 	helpers do
 		def base_url
-	      @base_url ||= "#{request.env['rack.url_scheme']}://{request.env['HTTP_HOST']}"
+	      @base_url ||= "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
 	    end
 
 		def json_params
@@ -68,7 +70,9 @@ namespace '/api/v1' do
 		        halt 400, { message:'Invalid JSON' }.to_json
 		    end
 		end
-	end	
+	end
+
+	
 
 	def company
       @company ||= Company.where(id: params[:id]).first
@@ -96,11 +100,10 @@ namespace '/api/v1' do
 	post '/companies' do
 	    company = Company.new(json_params)
 	    halt 422, serialize(company) unless company.save
-
 	    response.headers['Location'] = "#{base_url}/api/v1/companies/#{company.id}"
-	    serialize(company)
 	    status 201
-	end
+	  end
+
 
 	put '/companies/:id' do |id|
 	    halt_if_not_found!
