@@ -27,4 +27,5 @@ export class CompaniesComponent implements OnInit {
     this.router.navigate(['/companies', company.id]);
   }
 
+
 }

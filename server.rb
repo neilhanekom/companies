@@ -50,12 +50,16 @@ get '/'  do
 	'Welcome to the companies api'
 end
 
+set :protection, false
+
 namespace '/api/v1' do
 
 	before do
-		content_type 'application/json'
-		headers 'Access-Control-Allow-Origin' => '*',
-            	'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST', 'PUT', 'DELETE']  
+	   content_type :json    
+	   headers 	'Access-Control-Allow-Origin' => '*', 
+           		'Access-Control-Allow-Methods' => ['OPTIONS', 'GET', 'POST', 'PUT'],
+           		'Access-Control-Allow-Headers' => 'Content-Type'  
+
 	end
 
 	helpers do
@@ -97,6 +101,12 @@ namespace '/api/v1' do
 	    serialize(company)
 	end
 
+	 put '/companies/:id' do |id|
+	    halt_if_not_found!
+	    halt 422, serialize(company) unless company.update_attributes(json_params)
+	    serialize(company)
+	  end
+
 	post '/companies' do
 	    company = Company.new(json_params)
 	    halt 422, serialize(company) unless company.save
@@ -104,15 +114,18 @@ namespace '/api/v1' do
 	    status 201
 	  end
 
-
-	put '/companies/:id' do |id|
-	    halt_if_not_found!
-	    halt 422, serialize(company) unless company.update_attributes(json_params)
-	    serialize(company)
-	  end
+	 
 
 	delete '/companies/:id' do |id|
 	    company.destroy if company
 	    status 204
+	end
+
+	options "*" do
+	  response.headers["Access-Control-Allow-Methods"] = "PUT, POST"
+
+	  response.headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Cache-Control, Accept"
+
+	  200
 	end
 end	

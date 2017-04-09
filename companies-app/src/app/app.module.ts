@@ -12,20 +12,27 @@ import { CompanyComponent } from './companies/company.component';
 import { TestComponent } from './test/test.component';
 import { NewCompanyComponent } from './companies/new-company.component';
 
+import { ModalModule } from 'angular2-modal';
+import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
+import { EditCompanyComponent } from './companies/edit-company.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     CompaniesComponent,
     CompanyComponent,
     TestComponent,
-    NewCompanyComponent
+    NewCompanyComponent,
+    EditCompanyComponent
   ],
   imports: [
     BrowserModule,
     routing,
     FormsModule,
     HttpModule,
-    ReactiveFormsModule  
+    ReactiveFormsModule,
+    ModalModule.forRoot(),
+    BootstrapModalModule
   ],
   providers: [CompanyServiceService],
   bootstrap: [AppComponent]

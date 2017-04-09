@@ -39,5 +39,8 @@ export class CompanyComponent implements OnInit, OnDestroy {
   	this.paramsSubscription.unsubscribe();
   }
   
+  viewEditCompany(company) {
+    this.router.navigate(['/edit', company.id]);
+  }
 
 }

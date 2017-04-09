@@ -5,8 +5,8 @@
 <div class="clearfix"></div>
 <h2>Create new Company</h2>
 
-{{companyForm.directors}}
-<form [formGroup]="companyForm" novalidate (ngSubmit)="onSubmit()">
+<form *ngIf="companyForm" [formGroup]="companyForm" novalidate (ngSubmit)="onUpdate()">
+  
   <div class="form-group">
     <label class="center-block">Name:
       <input class="form-control" formControlName="name" >

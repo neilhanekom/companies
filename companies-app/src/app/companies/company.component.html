@@ -1,1 +1,23 @@
-<h1>{{company}}</h1>
+<ul class="nav navbar-nav">
+  <li role="presentation"><a routerLink="/"> View Companies</a></li>
+</ul>
+<div class="clearfix"></div>
+<h2 *ngIf="company">Company: {{company.name}}</h2>
+
+<dl *ngIf="company">
+  <dt>Address</dt>
+  <dd>{{company.address}}</dd>
+  <dt>City</dt>
+  <dd>{{company.city}}</dd>
+  <dt>Country</dt>
+  <dd>{{company.country}}</dd>
+  <dt>Email</dt>
+  <dd>{{company.email}}</dd>
+  <dt>Contact</dt>
+  <dd>{{company.contact}}</dd>
+  <div *ngIf="company.directors">
+  	<dt>Director/Onwers</dt>
+  	<dd *ngFor="let dir of company.directors">{{dir.name}}</dd>
+  </div>
+</dl>
+<button class="btn btn-primary" (click)="viewEditCompany(company)">Edit</button>

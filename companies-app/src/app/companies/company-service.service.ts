@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import {Observable } from 'rxjs/Observable';
-
-
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 import { Company } from './company.model';
 
 @Injectable()
 export class CompanyServiceService {
-
 
   constructor(private http: Http ) { }
 
@@ -22,10 +22,10 @@ export class CompanyServiceService {
   getCompany(id: string): Observable<Company> {
     return this.http.get(this.apiUrl + '/' + id)
                     .map(this.extractData)
-                    .catch(this.handleError);
+                    .catch(this.handleError); 
   }
 
-  addCompany (body: Object): Observable<Company[]> {
+  addCompany (body: Company): Observable<Company> {
 
         let bodyString = JSON.stringify(body);
         
@@ -33,9 +33,22 @@ export class CompanyServiceService {
         let options       = new RequestOptions({ headers: headers });
 
         return this.http.post(this.apiUrl, body, options)
-                         .map((res:Response) => res.json())
-                         .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
-  }   
+                         .map((res:Response) => res)
+                         .catch((error:any) => Observable.throw(error || 'Server error'));
+  } 
+
+  updateCompany (body: Company): Observable<Company> {
+
+        let reqUrl = this.apiUrl + '/' + body.id;
+        let bodyString = JSON.stringify(body);
+        
+        let headers      = new Headers({ 'Content-Type': 'application/json' }); 
+        let options       = new RequestOptions({ headers: headers });
+
+        return this.http.put(reqUrl, body, options)
+                         .map((res:Response) => res)
+                         .catch((error:any) => Observable.throw(error || 'Server error'));
+  }  
 
   private extractData(res: Response) {
     let body = res.json();
